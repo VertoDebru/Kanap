@@ -8,7 +8,6 @@ const myDivTotalPrice = document.getElementById("totalPrice");
 let totalPrice = 0;
 // Initialise le panier.
 let cart;
-
 // Verifie si localStorage est vide.
 if(!localStorage.getItem("basket")) {
   cart = new Array();
@@ -17,7 +16,6 @@ if(!localStorage.getItem("basket")) {
 }
 // Modifie le titre de la page.
 titlePage.innerHTML = `${cart.length} articles dans votre panier | Kanap`;
-
 // Récupere tous les produits de Kanap.
 fetch(url)
   .then(function(res) {
