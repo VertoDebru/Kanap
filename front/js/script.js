@@ -9,36 +9,19 @@ fetch(url)
       return res.json();
     }
   })
-  .then(function(value) {
-    console.log(value);
-    // Loop on all products.
-    for(let i = 0; i < value.length; i++) {
-        var data = value[i];
-        // Create 'a' Tag
-        let linkProduct = document.createElement('a');
-        linkProduct.setAttribute('href', './product.html?id='+data._id);
-        itemsBox.appendChild(linkProduct);
-        // Create 'article' Tag
-        let article = document.createElement('article');
-        linkProduct.appendChild(article);
-        // Create 'img' Tag
-        let image = document.createElement('img');
-        image.setAttribute('src', data.imageUrl);
-        image.setAttribute('alt', data.altTxt);
-        article.appendChild(image);
-        // Create 'h3' Tag
-        let title = document.createElement('h3');
-        title.innerHTML = data.name;
-        article.appendChild(title);
-        // Create 'p' Tag
-        let desc = document.createElement('p');
-        desc.innerHTML = data.description;
-        article.appendChild(desc);
+  .then(function(data) {
+    // Boucle sur tous les produits de Kanap.
+    for(let i in data) {
+      let article = data[i];
+      // Creation du lien de l'article.
+      let myLink = document.createElement("a");
+      myLink.setAttribute("href", `./product.html?id=${article._id}`);
+      myLink.innerHTML = `<article><img src="${article.imageUrl}" alt="${article.altTxt}"><h3 class="productName">${article.name}</h3><p class="productDescription">${article.description}</p></article>`;
+      // Insertion du lien dans le parent.
+      itemsBox.appendChild(myLink);
     }
   })
   .catch(function(err) {
-    // Une erreur est survenue
+    // Une erreur est survenue.
     console.log("Error : "+err);
   });
-  
-  console.log(localStorage.getItem('basket'));
