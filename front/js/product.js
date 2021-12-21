@@ -23,7 +23,7 @@ function loadProducts() {
   })
   .then((data) => {
     // Appel de la class MyProduct.
-    new MyProduct(data).Set();
+    new Myproduct(data).Set();
   })
   .catch((err) => {
     // Une erreur est survenue
