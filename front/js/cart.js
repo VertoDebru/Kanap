@@ -6,7 +6,7 @@ const myDivTotalPrice = document.getElementById("totalPrice");
 const btnOrder = document.getElementById("order");
 const isOrder = new URLSearchParams(document.location.search).has('firstName');
 
-// Initialise la page product.html
+// Initialise la page cart.html
 loadProducts();
 
 /* *********** *
