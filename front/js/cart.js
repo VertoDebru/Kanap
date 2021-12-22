@@ -4,10 +4,18 @@ const itemsBox = document.getElementById("cart__items");
 const myDivTotalQte = document.getElementById("totalQuantity");
 const myDivTotalPrice = document.getElementById("totalPrice");
 const btnOrder = document.getElementById("order");
-const isOrder = new URLSearchParams(document.location.search).has('firstName');
+const urlParams = new URLSearchParams(document.location.search);
 
-// Initialise la page cart.html
-loadProducts();
+// Si on est la page confirmation.html
+if(urlParams.has("id")) {
+    let orderId = urlParams.get("id");
+    let spanId = document.getElementById("orderId");
+    spanId.textContent = orderId;
+// Si il s'agit de la page cart.html
+} else {
+    // Initialise la page cart.html
+    loadProducts();
+}
 
 /* *********** *
  *  Fonctions  *

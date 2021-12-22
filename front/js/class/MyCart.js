@@ -174,10 +174,83 @@ class Mycart {
     // Traitement de la commande.
     postOrder() {
         // Le formulaire est envoyé par l'url
-        if(isOrder) {
-            alert(`Commande envoyé !`);
-            alert(`Redirection en cours...`);
+        if(urlParams.has('firstName')) {
+            if(this.checkInfos()) this.sendOrder();
         }
+    }
+
+    // Envoie de la commande.
+    sendOrder() {
+        // Creation des informations pour l'envoi.
+        let bodyOrder = {
+            "contact": {
+            "firstName": urlParams.get("firstName"),
+            "lastName": urlParams.get("lastName"),
+            "address": urlParams.get("address"),
+            "city": urlParams.get("city"),
+            "email": urlParams.get("email")
+            },
+            "products": this.getAllProductsId()
+        }
+        let urlOrder = "http://localhost:3000/api/products/order/";
+        let initOrder = {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: 'POST',
+            body: JSON.stringify(bodyOrder)
+        }
+        // Envoi des informations.
+        fetch(urlOrder, initOrder).then((res) => {
+            if (res.ok) {
+              return res.json();
+            }
+          })
+          .then((resOrder) => {
+            //alert(`Commande envoyé !`);
+            //alert(`Vidage du localStorage...`);
+            localStorage.clear();
+            //alert(`Redirection en cours...`);
+            window.location.href = `./../html/confirmation.html?id=${resOrder.orderId}`;
+          })
+          .catch((err) => {
+            // Une erreur est survenue
+            console.error(err);
+          });
+    }
+
+    // Verification des informations.
+    checkInfos() {
+        let check = true;
+        let urlParams = new URLSearchParams(document.location.search);
+        urlParams.forEach((result, key) => {
+            // Insertion des valeurs dans le formulaire.
+            let myInput = document.getElementById(`${key}`);
+            myInput.value = result;
+            if(key == "email") {
+                let errorBox = document.getElementById(`${key}ErrorMsg`);
+                // Email doit contenir commencer par des caracteres suivi d'@ puis des caracteres et termine avec un point et deux caracteres minimum.
+                let regExp = new RegExp(/^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})/g);
+                // Si le format ne correspond pas a une adresse email.
+                if (!myInput.value.match(regExp)) {
+                    console.log(myInput.value.match(regExp));
+                    alert("Email invalide!");
+                    errorBox.textContent = "L'adresse email n'est pas correct! (exemple@test.com)";
+                    check = false;
+                }
+            }
+        });
+        return check;
+    }
+
+    // Renvoi Array[ProductID]
+    getAllProductsId() {
+        let products = [];
+        this.cart.forEach(article => {
+            console.log(article[0]);
+            products.push(article[0]);
+        });
+        return products;
     }
 
     // Recupere l'identifiant de l'article
