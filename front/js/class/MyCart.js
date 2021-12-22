@@ -3,10 +3,14 @@ class Mycart {
         this.data = data;
         this.cart = CheckCart();
         this.totalPrice = 0;
+        this.isDelete = false;
     }
 
     // Mise en page du panier.
     Set() {
+        // Verifie si une commande est passée.
+        this.postOrder();
+
         // Si le panier est vide.
         if(this.isEmptyCart()) {
             // Modifie le titre de la page.
@@ -143,6 +147,7 @@ class Mycart {
                 // Mise a jour du panier.
                 this.cart.splice(articleId,1);
                 localStorage.setItem("basket", JSON.stringify(this.cart));
+                this.isDelete = true;
                 // Mise a jour du titre de la page.
                 document.title = `${this.cart.length} articles dans votre panier | Kanap`;
                 // Calcul le prix total de l'article selon le nombre de quantité.
@@ -156,8 +161,8 @@ class Mycart {
                 e.target.closest("article").remove();
                 // Si le panier est vide on affiche l'information.
                 if(this.isEmptyCart()) {
+                    // Mise a jour de l'affichage.
                     itemsBox.innerHTML = "<p>Votre panier est vide.</p>";
-                    // Modifie le titre de la page.
                     document.title = `Votre panier est vide. | Kanap`;
                     // Cache le formulaire de commande.
                     document.getElementsByClassName("cart__order")[0].setAttribute("style", "display:none");
@@ -166,11 +171,33 @@ class Mycart {
         }
     }
     
+    // Traitement de la commande.
+    postOrder() {
+        // Le formulaire est envoyé par l'url
+        if(isOrder) {
+            alert(`Commande envoyé !`);
+            alert(`Redirection en cours...`);
+        }
+    }
+
     // Recupere l'identifiant de l'article
     // si il correspond a l'identifiant du produit.
     getProductId(Id) {
+        Id = this.checkDelete(Id);
         for(let i in this.data) {
             if(this.data[i]._id == this.cart[Id][0]) return i;
+        }
+    }
+
+    // Verifie si un article a été supprimer.
+    checkDelete(Id) {
+        console.log(this.isDelete);
+        // Si aucun article a été supprimer
+        if(!this.isDelete) return Id;
+        // Si un article a été supprimer
+        else {
+            alert(`${Id} not exist!`);
+            return 0;
         }
     }
     
