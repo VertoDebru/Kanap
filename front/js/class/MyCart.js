@@ -36,10 +36,9 @@ class Mycart {
 
     // Mise en page d'un article du panier.
     setArticle(articleId,productId) {
-        console.log(this.data[productId].name);
         // Calcul le prix total de l'article selon le nombre de quantité.
         let myTotalPrice = this.cart[articleId][1]*this.data[productId].price;
-        console.log(`${this.data[productId].name} * ${this.cart[articleId][1]} = ${myTotalPrice}`);
+
         /* ************** *
          *  Mise en page  *
          * ************** */
@@ -83,8 +82,6 @@ class Mycart {
         // Insertion des elements dans les options de quantité.
         divQuantity.appendChild(pQuantity);
         divQuantity.appendChild(inputQuantity);
-        // Ajout de l'evenement.
-        this.addEvent(articleId,inputQuantity);
         // Creation du contenu des options de suppression.
         let divDelete = document.createElement("div");
         divDelete.classList.add("cart__item__content__settings__delete");
@@ -92,27 +89,20 @@ class Mycart {
         let pDelete = document.createElement("p");
         pDelete.classList.add("deleteItem");
         pDelete.textContent = "Supprimer";
-        // Ajout de l'evenement.
+
+        // Ajout des evenements.
+        this.addEvent(articleId,inputQuantity);
         this.addEvent(articleId,pDelete);
-        // Insertion du paragraphe dans les options de suppression.
+
+        // Insertion des elements.
         divDelete.appendChild(pDelete);
-
-        // Insertion de l'article.
         itemsBox.appendChild(tagArticle);
-        // Insertion de l'image dans son DIV.
         divImage.appendChild(tagImage);
-        // Insertion du contenu de la description.
         divContent.appendChild(divDescription);
-        // Insertion des options.
         divContent.appendChild(divSettings);
-        // Insertion de la quantité dans les options.
         divSettings.appendChild(divQuantity);
-        // Insertion de la suppression dans les options.
         divSettings.appendChild(divDelete);
-
-        // Insertion des elements de l'image dans l'article.
         tagArticle.appendChild(divImage);
-        // Insertion du contenu dans l'article
         tagArticle.appendChild(divContent);
         /* ************** */
         // Mise a jour du prix total du panier.
@@ -205,14 +195,10 @@ class Mycart {
             }
           })
           .then((resOrder) => {
-            //alert(`Commande envoyé !`);
-            //alert(`Vidage du localStorage...`);
             localStorage.clear();
-            //alert(`Redirection en cours...`);
             window.location.href = `./../html/confirmation.html?id=${resOrder.orderId}`;
           })
           .catch((err) => {
-            // Une erreur est survenue
             console.error(err);
           });
     }
@@ -225,14 +211,15 @@ class Mycart {
             // Insertion des valeurs dans le formulaire.
             let myInput = document.getElementById(`${key}`);
             myInput.value = result;
+            // Si il s'agit du parametre 'email'.
             if(key == "email") {
                 let errorBox = document.getElementById(`${key}ErrorMsg`);
                 // Email doit contenir commencer par des caracteres suivi d'@ puis des caracteres et termine avec un point et deux caracteres minimum.
                 let regExp = new RegExp(/^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})/g);
+                
                 // Si le format ne correspond pas a une adresse email.
                 if (!myInput.value.match(regExp)) {
-                    console.log(myInput.value.match(regExp));
-                    alert("Email invalide!");
+                    document.getElementById(`${key}`).focus();
                     errorBox.textContent = "L'adresse email n'est pas correct! (exemple@test.com)";
                     check = false;
                 }
@@ -245,7 +232,6 @@ class Mycart {
     getAllProductsId() {
         let products = [];
         this.cart.forEach(article => {
-            console.log(article[0]);
             products.push(article[0]);
         });
         return products;
@@ -254,7 +240,6 @@ class Mycart {
     // Recupere l'identifiant de l'article
     // si il correspond a l'identifiant du produit.
     getProductId(Id) {
-        console.log(Id);
         for(let i in this.data) {
             if(this.data[i]._id == this.cart[Id][0]) return i;
         }
