@@ -2,26 +2,30 @@
 const url = 'http://localhost:3000/api/products/';
 const itemsBox = document.getElementById('items');
 
-// Get all Kanap products.
-fetch(url)
-  .then(function(res) {
+// Initialise la page index.html
+loadProducts();
+
+/* *********** *
+ *  Fonctions  *
+ * *********** */
+// Chargement et mise en page.
+function loadProducts() {
+  fetch(url).then((res) => {
     if (res.ok) {
       return res.json();
     }
   })
-  .then(function(data) {
-    // Boucle sur tous les produits de Kanap.
-    for(let i in data) {
-      let article = data[i];
+  .then((data) => {
+    data.forEach(product => {
       // Creation du lien de l'article.
       let myLink = document.createElement("a");
-      myLink.setAttribute("href", `./product.html?id=${article._id}`);
-      myLink.innerHTML = `<article><img src="${article.imageUrl}" alt="${article.altTxt}"><h3 class="productName">${article.name}</h3><p class="productDescription">${article.description}</p></article>`;
-      // Insertion du lien dans le parent.
+      myLink.setAttribute("href", `./product.html?id=${product._id}`);
+      myLink.innerHTML = `<article><img src="${product.imageUrl}" alt="${product.altTxt}"><h3 class="productName">${product.name}</h3><p class="productDescription">${product.description}</p></article>`;
       itemsBox.appendChild(myLink);
-    }
+    });
   })
-  .catch(function(err) {
-    // Une erreur est survenue.
-    console.log("Error : "+err);
+  .catch((err) => {
+    console.error(err);
   });
+}
+/* *********** */
