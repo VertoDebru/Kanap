@@ -17,19 +17,18 @@ class Myproduct {
         priceProduct.textContent = this.data.price;
         descProduct.textContent = this.data.description;
 
-        // Boucle sur toutes les couleurs du produit.
+        // Insertion des couleurs du produit.
         for(let i = 0; i < this.data.colors.length; i++) {
-            // Insertion de la couleur.
             let newOption = document.createElement('option');
             newOption.setAttribute('value', this.data.colors[i]);
             let optionText = document.createTextNode(this.data.colors[i]);
-            // Insertion du texte de la couleur 
             newOption.appendChild(optionText);
-            // Insertion de la couleur dans le menu deroulant.
             colorsProduct.appendChild(newOption);
         }
+
         // Définition de la valeur par defaut pour la quantité.
         quantity.value = 1;
+
         // Ajout de l'evenement sur le bouton.
         addButton.addEventListener("click", () => {
             this.checkForm();
@@ -47,36 +46,30 @@ class Myproduct {
             alert("Aucune quantité défini!");
             quantity.focus();
         }
+
         // Verifie si le formulaire est bien rempli.
         if(colorsProduct.value && quantity.value >= 1) {
             // Si le panier est vide, on ajoute le produit.
-            if(this.isEmptyCart()) {
-                this.addProduct();
+            if(this.isEmptyCart()) this.addProduct();
             // Si le panier contient des articles.
-            } else {
+            else {
                 // Si le produit est deja present dans le panier.
                 if(this.checkInCart(this.data._id)) {
                     let articleId = this.getArticleId(this.data._id);
                     // Si on recois un identifiant.
                     if(articleId) {
-                        // Boucle sur tous les produits contenu dans le panier.
                         for(let i in this.cart)
                             if(i == articleId) this.editProduct(i);
                     // Si on recois aucun identifiant.
-                    } else {
-                        this.addProduct();
-                    }
+                    } else this.addProduct();
                 // Si le produit n'est pas dans le panier.
-                } else {
-                    this.addProduct();
-                }
+                } else this.addProduct();
             }
         }
     }
 
     // Ajout d'un produit dans le panier.
     addProduct() {
-        // On ajoute un nouveau produit au panier.
         this.cart.push([this.data._id,parseInt(quantity.value),colorsProduct.value]);
         localStorage.setItem('basket', JSON.stringify(this.cart));
         alert(`${quantity.value} ${this.data.name} en ${colorsProduct.value} ajouté au panier.`);
