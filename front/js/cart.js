@@ -1,10 +1,10 @@
 /* Global Variables */
-const url = "http://localhost:3000/api/products/";
+const urlParams = new URLSearchParams(document.location.search);
+const urlAPI = "http://localhost:3000/api/products/";
 const itemsBox = document.getElementById("cart__items");
 const myDivTotalQte = document.getElementById("totalQuantity");
 const myDivTotalPrice = document.getElementById("totalPrice");
 const btnOrder = document.getElementById("order");
-const urlParams = new URLSearchParams(document.location.search);
 
 // Si on est la page confirmation.html
 if(urlParams.has("id")) {
@@ -22,10 +22,8 @@ if(urlParams.has("id")) {
  * *********** */
 // Chargement et mise en page.
 function loadProducts() {
-  fetch(url).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
+  fetch(urlAPI).then((res) => {
+    if (res.ok) return res.json();
   })
   .then((data) => {
     // Appel de la class MyProduct.
@@ -42,7 +40,6 @@ function CheckCart() {
   // Verifie si localStorage est actif sur le navigateur.
   if (typeof(Storage) !== "undefined") {
     let myCart = [];
-    // Verifie si localStorage est vide.
     if(localStorage.getItem('basket')) {
       myCart = JSON.parse(localStorage.getItem('basket'));
     }
