@@ -26,11 +26,9 @@ function loadProducts() {
     if (res.ok) return res.json();
   })
   .then((data) => {
-    // Appel de la class MyProduct.
     new Mycart(data).Set();
   })
   .catch((err) => {
-    // Une erreur est survenue
     console.error(err);
   });
 }
