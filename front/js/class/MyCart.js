@@ -47,30 +47,37 @@ class Mycart {
         tagArticle.classList.add("cart__item");
         tagArticle.setAttribute("data-id",this.data[productId]._id);
         tagArticle.setAttribute("data-color",this.cart[articleId][2]);
+
         // Creation des elements pour l'image.
         let divImage = document.createElement("div");
         divImage.classList.add("cart__item__img");
+
         // Creation de la balise 'img'.
         let tagImage = document.createElement("img");
         tagImage.setAttribute("src",this.data[productId].imageUrl);
         tagImage.setAttribute("alt",this.data[productId].altTxt);
+
         // Creation des elements du contenu.
         let divContent = document.createElement("div");
         divContent.classList.add("cart__item__content");
+
         // Creation du contenu de la description.
         let divDescription = document.createElement("div");
         divDescription.classList.add("cart__item__content__description");
-        // Insertion des elements dans la description.
         divDescription.innerHTML = `<h2>${this.data[productId].name}</h2><p>${this.cart[articleId][2]}</p><p>${this.data[productId].price}€</p>`;
+
         // Creation des elements des options.
         let divSettings = document.createElement("div");
         divSettings.classList.add("cart__item__content__settings");
+
         // Creation du contenu des options de quantité.
         let divQuantity = document.createElement("div");
         divQuantity.classList.add("cart__item__content__settings__quantity");
+
         // Creation du paragraphe quantité.
         let pQuantity = document.createElement("p");
         pQuantity.textContent = "Qté : ";
+        
         // Creation du input quantité.
         let inputQuantity = document.createElement("input");
         inputQuantity.classList.add("itemQuantity");
@@ -80,8 +87,8 @@ class Mycart {
         inputQuantity.setAttribute("max","100");
         inputQuantity.setAttribute("value",this.cart[articleId][1]);
         // Insertion des elements dans les options de quantité.
-        divQuantity.appendChild(pQuantity);
-        divQuantity.appendChild(inputQuantity);
+        divQuantity.append(pQuantity,inputQuantity);
+
         // Creation du contenu des options de suppression.
         let divDelete = document.createElement("div");
         divDelete.classList.add("cart__item__content__settings__delete");
@@ -98,12 +105,11 @@ class Mycart {
         divDelete.appendChild(pDelete);
         itemsBox.appendChild(tagArticle);
         divImage.appendChild(tagImage);
-        divContent.appendChild(divDescription);
-        divContent.appendChild(divSettings);
-        divSettings.appendChild(divQuantity);
-        divSettings.appendChild(divDelete);
-        tagArticle.appendChild(divImage);
-        tagArticle.appendChild(divContent);
+
+        divContent.append(divDescription,divSettings);
+        divSettings.append(divQuantity,divDelete);
+        
+        tagArticle.append(divImage,divContent);
         /* ************** */
         // Mise a jour du prix total du panier.
         this.totalPrice += myTotalPrice;
@@ -247,9 +253,7 @@ class Mycart {
     
     // Verifie si le panier est vide. (Renvoi : true/false)
     isEmptyCart() {
-        if(!this.cart.length)
-            return true;
-        else
-            return false;
+        if(!this.cart.length) return true;
+        return false;
     }
 }

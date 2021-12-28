@@ -37,6 +37,7 @@ function CheckCart() {
     }
     return myCart;
   }
-  else return console.log("Browser not support localStorage!");
+  
+  return console.log("Browser not support localStorage!");
 }
 /* *********** */
