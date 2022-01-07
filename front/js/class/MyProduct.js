@@ -108,8 +108,8 @@ class Myproduct {
     
     // Verifie si un produit existe dans le panier. (Renvoi: true/false)
     checkInCart(Id) {
-        for(let i in CheckCart()) {
-            if(CheckCart()[i][0] == Id) return true;
+        for(let i in this.checkCart()) {
+            if(this.checkCart()[i][0] == Id) return true;
         }
         return false;
     }
