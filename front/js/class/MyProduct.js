@@ -1,7 +1,7 @@
 class Myproduct {
     constructor(data) {
         this.data = data;
-        this.cart = CheckCart();
+        this.cart = this.checkCart();
     }
 
     // Mise en page du produit.
@@ -33,6 +33,19 @@ class Myproduct {
         addButton.addEventListener("click", () => {
             this.checkForm();
         });
+    }
+    
+    // Fonction pour initialiser le panier.
+    checkCart() {
+        // Verifie si localStorage est actif sur le navigateur.
+        if (typeof(Storage) !== "undefined") {
+            let myCart = [];
+            if(localStorage.getItem('basket')) {
+                myCart = JSON.parse(localStorage.getItem('basket'));
+            }
+            return myCart;
+        }
+        return console.log("Browser not support localStorage!");
     }
 
     // Verification du formulaire.

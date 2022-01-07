@@ -32,18 +32,4 @@ function loadProducts() {
     console.error(err);
   });
 }
-
-// Fonction pour initialiser le panier.
-function CheckCart() {
-  // Verifie si localStorage est actif sur le navigateur.
-  if (typeof(Storage) !== "undefined") {
-    let myCart = [];
-    if(localStorage.getItem('basket')) {
-      myCart = JSON.parse(localStorage.getItem('basket'));
-    }
-    return myCart;
-  }
-  
-  return console.log("Browser not support localStorage!");
-}
 /* *********** */

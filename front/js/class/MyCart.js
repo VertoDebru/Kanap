@@ -1,8 +1,11 @@
 class Mycart {
     constructor(data) {
         this.data = data;
-        this.cart = CheckCart();
+        this.cart = this.checkCart();
         this.totalPrice = 0;
+        // RegEx
+        this.regInput = new RegExp(/[^a-zA-Z]/g);
+        this.regEmail = new RegExp(/^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})/g);
     }
 
     // Mise en page du panier.
@@ -208,6 +211,19 @@ class Mycart {
             console.error(err);
           });
     }
+    
+    // Fonction pour initialiser le panier.
+    checkCart() {
+        // Verifie si localStorage est actif sur le navigateur.
+        if (typeof(Storage) !== "undefined") {
+            let myCart = [];
+            if(localStorage.getItem('basket')) {
+                myCart = JSON.parse(localStorage.getItem('basket'));
+            }
+            return myCart;
+        }
+        return console.log("Browser not support localStorage!");
+    }
 
     // Verification des informations.
     checkInfos() {
@@ -216,17 +232,30 @@ class Mycart {
         urlParams.forEach((result, key) => {
             // Insertion des valeurs dans le formulaire.
             let myInput = document.getElementById(`${key}`);
+            let errorBox = document.getElementById(`${key}ErrorMsg`);
             myInput.value = result;
             // Si il s'agit du parametre 'email'.
             if(key == "email") {
-                let errorBox = document.getElementById(`${key}ErrorMsg`);
-                // Email doit contenir commencer par des caracteres suivi d'@ puis des caracteres et termine avec un point et deux caracteres minimum.
-                let regExp = new RegExp(/^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})/g);
-                
                 // Si le format ne correspond pas a une adresse email.
-                if (!myInput.value.match(regExp)) {
+                if (!myInput.value.match(this.regEmail)) {
                     document.getElementById(`${key}`).focus();
                     errorBox.textContent = "L'adresse email n'est pas correct! (exemple@test.com)";
+                    check = false;
+                }
+            }
+            // Si il s'agit du parametre 'email'.
+            else if(key == "address") {
+                if(myInput.value.length < 10 || !myInput.value.match(this.regInput)) {
+                    document.getElementById(`${key}`).focus();
+                    errorBox.textContent = "L'adresse doit contenir minimum 10 caractères avec un numéro.";
+                    check = false;
+                }
+            }
+            // Si il s'agit des autres.
+            else {
+                if(myInput.value.length < 3 || myInput.value.match(this.regInput)) {
+                    document.getElementById(`${key}`).focus();
+                    errorBox.textContent = "Ce champ doit contenir 3 caractères minimum et uniquement des lettres.";
                     check = false;
                 }
             }
