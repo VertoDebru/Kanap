@@ -1,15 +1,31 @@
-# Kanap #
+# Project 5 - Kanap
+Project Kanap - Openclassrooms.
+> Ecommerce in javascript designed for Openclassrooms web developer training.
 
-This is the front end and back end server for Project 5 of the Web Developer path.
-
-### Back end Prerequisites ###
-
+## Installation
 You will need to have Node and `npm` installed locally on your machine.
 
-### Back end Installation ###
+Install all the dependencies with npm.\
+Open the `back` directory in terminal :
+```bash
+npm install
+```
 
-Clone this repo. From the "back" folder of the project, run `npm install`. You 
-can then run the server with `node server`. 
-The server should run on `localhost` with default port `3000`. If the
-server runs on another port for any reason, this is printed to the
-console when the server starts, e.g. `Listening on port 3001`.
+## Kanap Back-End
+![javascript](https://img.shields.io/badge/Javascript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+![NodeJs](https://img.shields.io/badge/NodeJs-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-EEEEEE?style=for-the-badge&logo=express&logoColor=black)
+### Dependencies
+* express (MVC-like framework)
+* uuid
+
+### Available Scripts
+In the `back` directory, you can run:
+
+`node server`\
+Runs the app server.
+
+## Kanap Front-End
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![javascript](https://img.shields.io/badge/Javascript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
